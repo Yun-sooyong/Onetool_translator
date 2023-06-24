@@ -31,13 +31,16 @@ class BottomButton extends StatelessWidget {
                 ),
                 borderRadius: boxRadius,
               ),
+              child: Center(
+                child: icon,
+              ),
             ),
             const SizedBox(
               height: 5,
             ),
             Text(
               label,
-              style: Theme.of(context).textTheme.labelMedium,
+              style: Theme.of(context).textTheme.labelSmall,
             ),
           ],
         ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // Box Decorations
 BorderRadius boxRadius = BorderRadius.circular(15);
@@ -17,4 +18,10 @@ var boxEdge = const EdgeInsets.symmetric(vertical: 8);
 */
 Color backgroundColor = const Color(0xffF7F7F9);
 Color primaryColor = const Color(0xffD2302C);
+Color textFieldTextColor = const Color(0xff580b1c);
+
 //
+
+final testProvider = Provider<String>((_) => 'Hello');
+
+
