@@ -53,6 +53,9 @@ class _DropdownLangState extends State<DropdownLang> {
               onChanged: (value) {
                 mProvider.searchCode(value!);
                 textProvider.clear();
+                print(mProvider.code);
+                print(mProvider.lang);
+
               },
               iconStyleData: IconStyleData(
                 icon: const Icon(
