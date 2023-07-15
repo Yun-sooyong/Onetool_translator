@@ -22,6 +22,7 @@ var themeData = ThemeData(
     ),
     bodySmall: TextStyle(
       color: backgroundColor,
+      fontSize: 20,
     ),
     bodyMedium: TextStyle(
       color: textFieldTextColor,
@@ -40,6 +41,6 @@ var themeData = ThemeData(
   ),
   iconTheme: IconThemeData(
     color: primaryColor,
-    size: 28,
+    size: 32,
   ),
 );

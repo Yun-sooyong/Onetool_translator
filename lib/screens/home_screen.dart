@@ -1,18 +1,22 @@
-import 'package:a_translator/services/controller.dart';
+import 'package:a_translator/provider/provider.dart';
 import 'package:a_translator/util.dart';
 import 'package:a_translator/widgets/bottom_button.dart';
+import 'package:a_translator/widgets/drop_down_menu.dart';
 import 'package:bootstrap_icons/bootstrap_icons.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:translator/translator.dart';
+import '/widgets/text_box_widget.dart';
 
-class HomeScreen extends ConsumerWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  Widget build(BuildContext context) {
     var themeOf = Theme.of(context);
 
     return Scaffold(
@@ -36,13 +40,14 @@ class HomeScreen extends ConsumerWidget {
         padding: bodyEdge,
         child: Column(
           children: [
-            Expanded(
+            const Expanded(
               flex: 1,
-              child: UpperBody(themeOf: themeOf),
+              child: DropdownLang(),
+              //TopBody(themeOf: themeOf),
             ),
             Expanded(
               flex: 8,
-              child: InputBody(themeOf: themeOf),
+              child: MiddleBody(themeOf: themeOf),
             ),
             const Expanded(
               flex: 2,
@@ -99,58 +104,65 @@ class BottomBody extends StatelessWidget {
 ///
 /// UPPER BODY PART
 ///
-class UpperBody extends StatelessWidget {
-  const UpperBody({super.key, required this.themeOf});
+// class TopBody extends StatelessWidget {
+//   const TopBody({super.key, required this.themeOf});
 
-  final ThemeData themeOf;
+//   final ThemeData themeOf;
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: boxRadius,
-        color: themeOf.colorScheme.primary,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          DropdownButton(
-            items: const [],
-            //controller: fstLang,
-            onChanged: (value) {},
-          ),
-          Icon(
-            BootstrapIcons.arrow_left_right,
-            color: themeOf.colorScheme.background,
-            size: 20,
-          ),
-          DropdownMenu(
-            //controller: sndLang,
-            trailingIcon: Icon(
-              BootstrapIcons.arrow_down_short,
-              color: themeOf.colorScheme.background,
-            ),
-            selectedTrailingIcon: Icon(
-              BootstrapIcons.arrow_up_short,
-              color: themeOf.colorScheme.background,
-            ),
-            dropdownMenuEntries: const [],
-            inputDecorationTheme: InputDecorationTheme(
-              border: InputBorder.none,
-              iconColor: themeOf.colorScheme.background,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       decoration: BoxDecoration(
+//         borderRadius: boxRadius,
+//         color: themeOf.colorScheme.primary,
+//       ),
+//       child: Row(
+//         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+//         children: [
+//           Expanded(
+//             flex: 3,
+//             child: Padding(
+//               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+//               child: Container(),
+//             ),
+//           ),
+//           Expanded(
+//             child: Icon(
+//               BootstrapIcons.arrow_left_right,
+//               color: themeOf.colorScheme.background,
+//               size: 20,
+//             ),
+//           ),
+//           Expanded(
+//             flex: 3,
+//             child: DropdownMenu(
+//               //controller: sndLang,
+//               trailingIcon: Icon(
+//                 BootstrapIcons.arrow_down_short,
+//                 color: themeOf.colorScheme.background,
+//               ),
+//               selectedTrailingIcon: Icon(
+//                 BootstrapIcons.arrow_up_short,
+//                 color: themeOf.colorScheme.background,
+//               ),
+//               dropdownMenuEntries: const [],
+//               inputDecorationTheme: InputDecorationTheme(
+//                 border: InputBorder.none,
+//                 iconColor: themeOf.colorScheme.background,
+//               ),
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
 
 ///
 /// Input Textfield and translation text view part
 ///
-class InputBody extends ConsumerWidget {
-  const InputBody({
+class MiddleBody extends StatelessWidget {
+  const MiddleBody({
     super.key,
     required this.themeOf,
   });
@@ -158,180 +170,29 @@ class InputBody extends ConsumerWidget {
   final ThemeData themeOf;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final _controller = ref.watch(translatorProvider);
+  Widget build(BuildContext context) {
+    return Consumer(
+      builder: (context, ref, child) {
+        var mProvider = ref.watch(mapProvider);
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 15),
-      child: Column(
-        children: [
-          Expanded(
-            child: Padding(
-              padding: boxEdge,
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 8,
-                ),
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: themeOf.colorScheme.primary.withOpacity(0.6),
-                    width: 2,
-                  ),
-                  borderRadius: boxRadius,
-                ),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Input',
-                          style: Theme.of(context).textTheme.labelLarge,
-                        ),
-                        Row(
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                try {
-                                  Clipboard.setData(
-                                    const ClipboardData(text: 'textProvider'),
-                                  );
-                                  Fluttertoast.showToast(
-                                    msg: '클립보드에 복사되었습니다.',
-                                    toastLength: Toast.LENGTH_SHORT,
-                                    gravity: ToastGravity.BOTTOM,
-                                  );
-                                } catch (e) {
-                                  Fluttertoast.showToast(
-                                    msg: '복사에 실패했습니다.\nError:$e',
-                                    toastLength: Toast.LENGTH_SHORT,
-                                    gravity: ToastGravity.BOTTOM,
-                                  );
-                                }
-                              },
-                              child: const Icon(
-                                BootstrapIcons.clipboard,
-                                size: 22,
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                _controller.clear();
-                              },
-                              child: const Icon(
-                                BootstrapIcons.trash,
-                                size: 22,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Expanded(
-                      child: TextField(
-                        textInputAction: TextInputAction.go,
-                        onSubmitted: (value) {
-                          // enter를 사용해 키보드를 내리는 기능
-                          FocusManager.instance.primaryFocus?.unfocus();
-                        },
-                        onChanged: (text) async {
-                          _controller.save(text);
-                          final translation = await text.translate(
-                            from: _controller.from,
-                            to: _controller.to,
-                          );
-                          _controller.show(translation.text);
-                        },
-                        controller: _controller.textEditController,
-                        keyboardType: TextInputType.multiline,
-                        readOnly: false,
-                        maxLines: 10,
-                        style: Theme.of(context).textTheme.bodyMedium,
-                        decoration: const InputDecoration(
-                          border: InputBorder.none,
-                          
-                        ),
-                      ),
-                    ),
-                  ],
+        return const Padding(
+          padding: EdgeInsets.symmetric(vertical: 15),
+          child: Column(
+            children: [
+              Expanded(
+                child: TextBox(
+                  isTextField: true,
                 ),
               ),
-            ),
-          ),
-          Expanded(
-            child: Padding(
-              padding: boxEdge,
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 8,
-                ),
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: themeOf.colorScheme.primary.withOpacity(0.6),
-                    width: 2,
-                  ),
-                  borderRadius: boxRadius,
-                ),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Output',
-                          style: Theme.of(context).textTheme.labelLarge,
-                        ),
-                        // textfeild 위의 아이콘
-                        Row(
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                try {
-                                  Clipboard.setData(
-                                      const ClipboardData(text: ''));
-                                  Fluttertoast.showToast(
-                                    msg: '클립보드에 복사되었습니다.',
-                                    toastLength: Toast.LENGTH_SHORT,
-                                    gravity: ToastGravity.BOTTOM,
-                                  );
-                                } catch (e) {
-                                  Fluttertoast.showToast(
-                                    msg: '복사에 실패했습니다.\nError:$e',
-                                    toastLength: Toast.LENGTH_SHORT,
-                                    gravity: ToastGravity.BOTTOM,
-                                  );
-                                }
-                              },
-                              child: const Icon(
-                                BootstrapIcons.clipboard,
-                                size: 22,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Expanded(
-                      child: Container(),
-                    ),
-                  ],
+              Expanded(
+                child: TextBox(
+                  isTextField: false,
                 ),
               ),
-            ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

@@ -9,7 +9,7 @@ class Translation {
   TextEditingController textEditController = TextEditingController();
   String source = '';
   String transText = '';
-  String from = 'auto';
+  String from = 'en';
   String to = 'ko';
 
   ///
@@ -18,6 +18,7 @@ class Translation {
   // show translated text
   void show(var translation) {
     transText = translation;
+    NotificationListener;
   }
 
   void save(var text) {
