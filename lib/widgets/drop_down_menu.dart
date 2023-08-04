@@ -68,11 +68,13 @@ class _DropdownLangState extends State<DropdownLang> {
               ),
               dropdownStyleData: DropdownStyleData(
                 maxHeight: 250,
+                // TODO width 크기를 입력받도록 해서 사용성을 높힘 
                 width: MediaQuery.of(context).size.width * 0.9,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(14),
                   color: themeOf.colorScheme.primary.withOpacity(0.9),
                 ),
+                // TODO width 수정할때 offset도 같이 수정
                 offset: const Offset(-30, -20),
                 scrollbarTheme: ScrollbarThemeData(
                   radius: const Radius.circular(40),

@@ -5,6 +5,7 @@ import 'package:a_translator/widgets/drop_down_menu.dart';
 import 'package:bootstrap_icons/bootstrap_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import '/widgets/text_box_widget.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -43,7 +44,6 @@ class _HomeScreenState extends State<HomeScreen> {
             const Expanded(
               flex: 1,
               child: DropdownLang(),
-              //TopBody(themeOf: themeOf),
             ),
             Expanded(
               flex: 8,
@@ -51,7 +51,10 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             const Expanded(
               flex: 2,
-              child: BottomBody(),
+              child: Hero(
+                tag: 'bottomBody',
+                child: BottomBody(),
+              ),
             ),
           ],
         ),
@@ -78,12 +81,16 @@ class BottomBody extends StatelessWidget {
           BottomButton(
             icon: const Icon(BootstrapIcons.keyboard),
             label: 'Typing',
-            onTap: () {},
+            onTap: () {
+              context.go('/');
+            },
           ),
           BottomButton(
             icon: const Icon(BootstrapIcons.mic),
             label: 'Voice',
-            onTap: () {},
+            onTap: () {
+              context.go('/stt');
+            },
           ),
           BottomButton(
             icon: const Icon(BootstrapIcons.camera),
@@ -173,7 +180,7 @@ class MiddleBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer(
       builder: (context, ref, child) {
-        var mProvider = ref.watch(mapProvider);
+        //var mProvider = ref.watch(mapProvider);
 
         return const Padding(
           padding: EdgeInsets.symmetric(vertical: 15),

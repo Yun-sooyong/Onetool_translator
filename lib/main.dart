@@ -1,7 +1,9 @@
 import 'package:a_translator/screens/home_screen.dart';
+import 'package:a_translator/screens/stt_screen.dart';
 import 'package:a_translator/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 void main() {
   runApp(
@@ -10,6 +12,20 @@ void main() {
     ),
   );
 }
+
+final GoRouter _router = GoRouter(
+  initialLocation: '/',
+  routes: [
+    GoRoute(
+      path: '/',
+      builder: (context, state) => const HomeScreen(),
+    ),
+    GoRoute(
+      path: '/stt',
+      builder: (context, state) => const SttScreen(),
+    ),
+  ],
+);
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
@@ -25,11 +41,11 @@ class _MyAppState extends State<MyApp> {
       onTap: () {
         FocusManager.instance.primaryFocus?.unfocus();
       },
-      child: MaterialApp(
+      child: MaterialApp.router(
         title: 'Onetool Translator',
         theme: themeData,
         debugShowCheckedModeBanner: false,
-        home: const HomeScreen(),
+        routerConfig: _router,
       ),
     );
   }
