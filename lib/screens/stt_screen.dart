@@ -3,9 +3,7 @@ import 'package:a_translator/util.dart';
 import 'package:a_translator/widgets/drop_down_menu.dart';
 import 'package:bootstrap_icons/bootstrap_icons.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:speech_to_text/speech_to_text.dart';
-import 'package:speech_to_text/speech_to_text_provider.dart';
 
 class SttScreen extends StatefulWidget {
   const SttScreen({super.key});
@@ -15,20 +13,9 @@ class SttScreen extends StatefulWidget {
 }
 
 class _SttScreenState extends State<SttScreen> {
-  final SpeechToText speech = SpeechToText();
-  late SpeechToTextProvider speechProvider;
-
-  @override
-  void initState() {
-    super.initState();
-
-    speechProvider = SpeechToTextProvider(speech);
-    initSpeechState();
-  }
-
-  Future<void> initSpeechState() async {
-    await speechProvider.initialize();
-  }
+  SpeechToText speechToText = SpeechToText();
+  var text = '아래 버튼을 눌러 녹음을 시작하세요';
+  bool isListening = false;
 
   @override
   Widget build(BuildContext context) {
@@ -56,6 +43,7 @@ class _SttScreenState extends State<SttScreen> {
               flex: 1,
               child: DropdownLang(),
             ),
+            // * Text Box //
             Expanded(
               flex: 7,
               child: Padding(
@@ -65,6 +53,7 @@ class _SttScreenState extends State<SttScreen> {
                 child: Stack(
                   alignment: AlignmentDirectional.bottomCenter,
                   clipBehavior: Clip.none,
+                  fit: StackFit.expand,
                   children: [
                     Container(
                       padding: const EdgeInsets.symmetric(
@@ -78,10 +67,60 @@ class _SttScreenState extends State<SttScreen> {
                         ),
                         borderRadius: boxRadius,
                       ),
+                      child: Text(text),
                     ),
+                    // * Recording Button //
                     Positioned(
                       bottom: -50,
-                      child: VoiceRecodingButton(themeOf: themeOf),
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                              blurRadius: 10,
+                              spreadRadius: 2,
+                              offset: Offset(0, 3),
+                              color: Colors.black45,
+                            ),
+                          ],
+                        ),
+                        child: IconButton(
+                          // * 녹화 기능 파트
+                          onPressed: () async {
+                            if (!isListening) {
+                              var aviliable = await speechToText.initialize();
+                              if (aviliable) {
+                                setState(() {
+                                  isListening = true;
+                                  speechToText.listen(
+                                    onResult: (result) {
+                                      setState(() {
+                                        text = result.recognizedWords;
+                                      });
+                                    },
+                                  );
+                                });
+                              }
+                            } else {
+                              setState(() {
+                                isListening = false;
+                              });
+                              speechToText.stop();
+                            }
+                          },
+                          icon: Icon(
+                            isListening
+                                ? BootstrapIcons.stop_fill
+                                : BootstrapIcons.mic_fill,
+                            size: 40,
+                            color: themeOf.colorScheme.background,
+                          ),
+                          style: IconButton.styleFrom(
+                            backgroundColor: themeOf.colorScheme.primary,
+                            fixedSize: const Size(100, 100),
+                          ),
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -99,55 +138,6 @@ class _SttScreenState extends State<SttScreen> {
               ),
             )
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class VoiceRecodingButton extends StatefulWidget {
-  const VoiceRecodingButton({
-    super.key,
-    required this.themeOf,
-  });
-
-  final ThemeData themeOf;
-
-  @override
-  State<VoiceRecodingButton> createState() => _VoiceRecodingButtonState();
-}
-
-class _VoiceRecodingButtonState extends State<VoiceRecodingButton> {
-  bool isRecording = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        shape: BoxShape.circle,
-        boxShadow: [
-          BoxShadow(
-            blurRadius: 10,
-            spreadRadius: 2,
-            offset: Offset(0, 3),
-            color: Colors.black45,
-          ),
-        ],
-      ),
-      child: IconButton(
-        onPressed: () {
-          setState(() {
-            isRecording = !isRecording;
-          });
-        },
-        icon: Icon(
-          isRecording ? BootstrapIcons.stop_fill : BootstrapIcons.mic_fill,
-          size: 40,
-          color: widget.themeOf.colorScheme.background,
-        ),
-        style: IconButton.styleFrom(
-          backgroundColor: widget.themeOf.colorScheme.primary,
-          fixedSize: const Size(100, 100),
         ),
       ),
     );
