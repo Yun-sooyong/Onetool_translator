@@ -1,5 +1,7 @@
 import 'package:a_translator/screens/home_screen.dart';
 import 'package:a_translator/screens/stt_screen.dart';
+import 'package:a_translator/screens/voice_screen.dart';
+import 'package:a_translator/screens/typing_screen.dart';
 import 'package:a_translator/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,12 +19,16 @@ final GoRouter _router = GoRouter(
   initialLocation: '/',
   routes: [
     GoRoute(
-      path: '/',
-      builder: (context, state) => const HomeScreen(),
+      path: '/stt',
+      builder: (context, state) => const VoiceScreen(),
     ),
     GoRoute(
-      path: '/stt',
+      path: '/past',
       builder: (context, state) => const SttScreen(),
+    ),
+    GoRoute(
+      path: '/',
+      builder: (context, state) => const TypingScreen(),
     ),
   ],
 );

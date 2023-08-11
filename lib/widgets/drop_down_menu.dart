@@ -47,15 +47,12 @@ class _DropdownLangState extends State<DropdownLang> {
                       ))
                   .toList(),
 
-              /// 지금 바꾸면 items에 없는 내용이라 value에서 오류발생
-              /// TODO 이후에 items를 변경하면 [ref.read(translateToProvider)]로 변경해놓을것
+              // * 지금 바꾸면 items에 없는 내용이라 value에서 오류발생
+              // TODOS 이후에 items를 변경하면 [ref.read(translateToProvider)]로 변경해놓을것
               value: mProvider.lang,
               onChanged: (value) {
                 mProvider.searchCode(value!);
                 textProvider.clear();
-                print(mProvider.code);
-                print(mProvider.lang);
-
               },
               iconStyleData: IconStyleData(
                 icon: const Icon(
@@ -68,13 +65,13 @@ class _DropdownLangState extends State<DropdownLang> {
               ),
               dropdownStyleData: DropdownStyleData(
                 maxHeight: 250,
-                // TODO width 크기를 입력받도록 해서 사용성을 높힘 
+                // TODOS width 크기를 입력받도록 해서 사용성을 높힘 
                 width: MediaQuery.of(context).size.width * 0.9,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(14),
                   color: themeOf.colorScheme.primary.withOpacity(0.9),
                 ),
-                // TODO width 수정할때 offset도 같이 수정
+                // TODOS width 수정할때 offset도 같이 수정
                 offset: const Offset(-30, -20),
                 scrollbarTheme: ScrollbarThemeData(
                   radius: const Radius.circular(40),

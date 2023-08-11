@@ -1,4 +1,3 @@
-import 'package:a_translator/provider/provider.dart';
 import 'package:a_translator/util.dart';
 import 'package:a_translator/widgets/bottom_button.dart';
 import 'package:a_translator/widgets/drop_down_menu.dart';
@@ -24,18 +23,13 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: themeOf.colorScheme.background,
       extendBody: true,
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'translator',
-          style: themeOf.textTheme.titleMedium,
         ),
-        leading: Icon(
+        leading: const Icon(
           BootstrapIcons.list,
-          color: themeOf.iconTheme.color,
           size: 30,
         ),
-        centerTitle: false,
-        elevation: 0,
-        backgroundColor: Colors.transparent,
       ),
       body: Padding(
         padding: bodyEdge,
@@ -79,27 +73,33 @@ class BottomBody extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           BottomButton(
+            color: Theme.of(context).colorScheme.primary,
             icon: const Icon(BootstrapIcons.keyboard),
-            label: 'Typing',
+            label: const Text('Typing'),
             onTap: () {
               context.go('/');
             },
           ),
           BottomButton(
+            color: Theme.of(context).colorScheme.primary,
             icon: const Icon(BootstrapIcons.mic),
-            label: 'Voice',
+            label: const Text('Voice'),
             onTap: () {
               context.go('/stt');
             },
           ),
           BottomButton(
+            color: Theme.of(context).colorScheme.primary,
             icon: const Icon(BootstrapIcons.camera),
-            label: 'Camera',
-            onTap: () {},
+            label: const Text('Camera'),
+            onTap: () {
+              context.go('/new');
+            },
           ),
           BottomButton(
+            color: Theme.of(context).colorScheme.primary,
             icon: const Icon(BootstrapIcons.image),
-            label: 'Image',
+            label: const Text('Image'),
             onTap: () {},
           ),
         ],

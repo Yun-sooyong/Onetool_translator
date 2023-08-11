@@ -86,6 +86,7 @@ class _SttScreenState extends State<SttScreen> {
                         ),
                         child: IconButton(
                           // * 녹화 기능 파트
+                          // TODOS 녹음 확인 및 번역기능 추가 필요
                           onPressed: () async {
                             if (!isListening) {
                               var aviliable = await speechToText.initialize();
