@@ -40,27 +40,23 @@ class BottomButton extends StatelessWidget {
                 ),
                 borderRadius: boxRadius,
               ),
-              child: Row(
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Center(
                     child: icon,
                   ),
-                  isWide
-                      ? Padding(
-                          padding: const EdgeInsets.only(left: 5),
-                          child: label
-                        )
-                      : const SizedBox(),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  isWide ? label : const SizedBox(),
                 ],
               ),
             ),
             SizedBox(
               height: isWide ? 0 : 5,
             ),
-            isWide
-                ? const SizedBox.shrink()
-                : label,
+            isWide ? const SizedBox.shrink() : label,
           ],
         ),
       ),

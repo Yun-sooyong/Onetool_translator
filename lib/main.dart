@@ -1,4 +1,4 @@
-import 'package:a_translator/screens/home_screen.dart';
+import 'package:a_translator/screens/selected_mod_screen.dart';
 import 'package:a_translator/screens/stt_screen.dart';
 import 'package:a_translator/screens/voice_screen.dart';
 import 'package:a_translator/screens/typing_screen.dart';
@@ -19,16 +19,20 @@ final GoRouter _router = GoRouter(
   initialLocation: '/',
   routes: [
     GoRoute(
-      path: '/stt',
+      path: '/voice',
       builder: (context, state) => const VoiceScreen(),
     ),
     GoRoute(
-      path: '/past',
-      builder: (context, state) => const SttScreen(),
+      path: '/typing',
+      builder: (context, state) => const TypingScreen(),
     ),
     GoRoute(
       path: '/',
-      builder: (context, state) => const TypingScreen(),
+      builder: (context, state) => const SelectedModScreen(),
+    ),
+    GoRoute(
+      path: '/stt',
+      builder: (context, state) => const SttScreen(),
     ),
   ],
 );

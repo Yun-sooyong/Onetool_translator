@@ -30,16 +30,20 @@ class TextBoxWidget extends StatelessWidget {
       child: Column(
         children: [
           // * Box title, action buttons //
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(title),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: actions,
-              ),
-            ],
-          ),
+          title == ''
+              ? SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                )
+              : Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(title),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: actions,
+                    ),
+                  ],
+                ),
 
           const SizedBox(
             height: 10,

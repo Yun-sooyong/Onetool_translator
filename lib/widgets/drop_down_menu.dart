@@ -1,5 +1,6 @@
+import 'package:a_translator/provider/language_provider.dart';
 import 'package:a_translator/provider/provider.dart';
-import 'package:a_translator/services/lang.dart';
+import 'package:a_translator/theme.dart';
 import 'package:a_translator/util.dart';
 import 'package:bootstrap_icons/bootstrap_icons.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
@@ -18,7 +19,7 @@ class DropdownLang extends StatefulWidget {
 class _DropdownLangState extends State<DropdownLang> {
   @override
   Widget build(BuildContext context) {
-    final themeOf = Theme.of(context);
+    final themeOf = themeData;
 
     return Container(
       padding: const EdgeInsets.symmetric(
@@ -37,7 +38,7 @@ class _DropdownLangState extends State<DropdownLang> {
           return DropdownButtonHideUnderline(
             child: DropdownButton2(
               isExpanded: true,
-              items: lang
+              items: toList
                   .map((item) => DropdownMenuItem(
                         value: item,
                         child: Text(
@@ -65,7 +66,7 @@ class _DropdownLangState extends State<DropdownLang> {
               ),
               dropdownStyleData: DropdownStyleData(
                 maxHeight: 250,
-                // TODOS width 크기를 입력받도록 해서 사용성을 높힘 
+                // TODOS width 크기를 입력받도록 해서 사용성을 높힘
                 width: MediaQuery.of(context).size.width * 0.9,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(14),
@@ -88,6 +89,148 @@ class _DropdownLangState extends State<DropdownLang> {
             ),
           );
         },
+      ),
+    );
+  }
+}
+
+// * 새로 만든 Dropdown * //
+class LanguageDropdown extends ConsumerWidget {
+  const LanguageDropdown({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    var langFinder = ref.watch(langFinderProvider.notifier);
+
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+      //width: MediaQuery.of(context).size.width,
+      decoration: BoxDecoration(
+        //color: themeData.colorScheme.primary,
+        border: Border.all(
+          color: themeData.colorScheme.primary,
+          width: 2,
+        ),
+        borderRadius: boxRadius,
+      ),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton2(
+          isExpanded: true,
+          items: toList
+              .map(
+                (item) => DropdownMenuItem(
+                  value: item,
+                  child: Text(
+                    item,
+                  ),
+                ),
+              )
+              .toList(),
+          value: ref.watch(langFinderProvider),
+          onChanged: (value) {
+            langFinder.setCodeState(value!);
+          },
+          iconStyleData: IconStyleData(
+            icon: const Icon(BootstrapIcons.arrow_down_square),
+            iconEnabledColor: themeData.colorScheme.primary,
+            iconDisabledColor: Colors.grey[400],
+            openMenuIcon: const Icon(BootstrapIcons.arrow_up_square),
+          ),
+          dropdownStyleData: DropdownStyleData(
+            decoration: BoxDecoration(
+              borderRadius: boxRadius,
+            ),
+            offset: const Offset(0, -10),
+          ),
+          menuItemStyleData: MenuItemStyleData(
+            overlayColor: MaterialStatePropertyAll(
+              themeData.colorScheme.background,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// * Dropdown Widget * //
+
+class DropdownMenuBar extends StatefulWidget {
+  final void Function(String lang) onChanged;
+  final List<String> list;
+
+  const DropdownMenuBar({
+    super.key,
+    required this.onChanged,
+    required this.list,
+  });
+
+  @override
+  State<DropdownMenuBar> createState() => _DropdownMenuBarState();
+}
+
+class _DropdownMenuBarState extends State<DropdownMenuBar> {
+  late String selectedValue;
+  @override
+  void initState() {
+    selectedValue = '한국어';
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+      //width: MediaQuery.of(context).size.width,
+      // decoration: BoxDecoration(
+      //   color: themeData.colorScheme.primary,
+      //   border: Border.all(
+      //     color: themeData.colorScheme.primary,
+      //     width: 2,
+      //   ),
+      //   borderRadius: boxRadius,
+      // ),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton2(
+          isExpanded: true,
+          items: widget.list
+              .map(
+                (item) => DropdownMenuItem(
+                  value: item,
+                  child: Text(
+                    item,
+                  ),
+                ),
+              )
+              .toList(),
+          value: selectedValue,
+          onChanged: (value) {
+            setState(() {
+              selectedValue = value!;
+            });
+            widget.onChanged(value!);
+          },
+          hint: const Text('Hint'),
+          iconStyleData: IconStyleData(
+            icon: const Icon(BootstrapIcons.arrow_down_square),
+            iconEnabledColor: themeData.colorScheme.primary,
+            iconDisabledColor: Colors.grey[400],
+            openMenuIcon: const Icon(BootstrapIcons.arrow_up_square),
+          ),
+          dropdownStyleData: DropdownStyleData(
+            decoration: BoxDecoration(
+              borderRadius: boxRadius,
+            ),
+            offset: const Offset(0, -10),
+          ),
+          menuItemStyleData: MenuItemStyleData(
+            overlayColor: MaterialStatePropertyAll(
+              themeData.colorScheme.background,
+            ),
+          ),
+        ),
       ),
     );
   }

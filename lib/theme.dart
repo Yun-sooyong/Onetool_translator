@@ -28,16 +28,23 @@ var themeData = ThemeData(
       titleMedium : GoogleFonts.orbitron
       other : GoogleFonts.exo2
     */
+    // * title meduim = app bar title 용  
     titleMedium: TextStyle(
       fontSize: 24,
       color: mColor,
       letterSpacing: 1.2,
     ),
+    // * titleLarge = mod select 화면의 메인 로고용
+    titleLarge: TextStyle(
+      fontSize: 56,
+      color: bColor,
+      letterSpacing: 3,
+    ),
     bodySmall: TextStyle(
       color: backgroundColor,
       fontSize: 20,
     ),
-    // bodyMedium == default text theme
+    // * bodyMedium == default text theme 
     bodyMedium: TextStyle(
       color: mColor,
       fontSize: 20,

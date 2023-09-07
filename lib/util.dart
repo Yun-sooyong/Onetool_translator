@@ -18,7 +18,7 @@ var mainPadding = const EdgeInsets.symmetric(vertical: 10, horizontal: 15);
 var boxPadding = const EdgeInsets.all(20);
 
 // * Margin
-var boxMargin = const EdgeInsets.symmetric(vertical: 10);
+var boxMargin = const EdgeInsets.only(top: 10);
 
 // * Colors //
 Color bColor = const Color(0xffF7F7F9);

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final translatorLangugeSet = StateProvider((ref) => 'ko');
-final translateToProvider = StateProvider((ref) => '한국어');
+// final translatorLangugeSet = StateProvider((ref) => 'ko');
+// final translateToProvider = StateProvider((ref) => '한국어');
 
 final textControllerStateProvider =
     StateProvider.autoDispose((ref) => TextEditingController());
@@ -75,3 +75,5 @@ class MapSearcher extends ChangeNotifier {
     notifyListeners();
   }
 }
+
+

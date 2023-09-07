@@ -143,4 +143,9 @@ class _SttScreenState extends State<SttScreen> {
       ),
     );
   }
+
+  void startListening() {  }
+  void resultListening() {}
+  void errorListening() {}
+  void statusListening() {}
 }
